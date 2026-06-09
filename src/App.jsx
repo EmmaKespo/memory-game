@@ -134,6 +134,17 @@ const handleCardClick = (id) => {
   };
 
 
+  const handleResetGame = () => {
+  setScore(0);
+  setBestScore(0);
+  setClickedIds([]);
+  localStorage.removeItem('ditto_best_score');
+  // Reshuffle the grid immediately upon resetting
+  setSprites((prevSprites) => [...prevSprites].sort(() => Math.random() - 0.5));
+};
+
+
+
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
 
@@ -161,6 +172,14 @@ const handleCardClick = (id) => {
               <span className="block text-4xl font-bold text-blue-400 mt-1">{score}</span>
             </div>
           </div>
+          {/* Reset Button  */}
+      <button
+        onClick={handleResetGame}
+        className="w-full bg-red-950/40 hover:bg-red-900/60 active:bg-red-900 text-red-400 hover:text-red-300 border border-red-900/50 rounded-xl py-2 px-3 text-xs font-semibold tracking-wider uppercase font-sans transition-all duration-200 shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+      >
+        Reset Game
+      </button>
+
         </div>
           
         
@@ -199,7 +218,12 @@ const handleCardClick = (id) => {
 
           ))}
         </div>
-        <footer><p>&copy; 2026 By Emma Kespo</p></footer>
+        {/* Styled Footer Block at the bottom */}
+    <footer className="mt-16 border-t border-slate-800/60 pt-6 pb-2 text-center">
+      <p className="text-xs tracking-widest text-slate-500 font-medium font-sans uppercase">
+        &copy; 2026 By <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 font-bold">Emma Kespo</span>
+      </p>
+    </footer>
       </div>
     
   );
