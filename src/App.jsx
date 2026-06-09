@@ -15,59 +15,6 @@ export default function App() {
 
 
 
-  //alternative for clickedIds: const [clickedIds, setClickedIds] = useState([]);
-
-  // alternative for Click handler that checks for unique selections, modifies score, and reshuffles
- /* const handleCardClick = (id) => {
-    if (clickedIds.includes(id)) {
-      // Game Over: Reset score and clicked tracking history
-      setScore(0);
-      setClickedIds([]);
-    } else {
-      // Correct Move: Increment score and record the ID
-      const newScore = score + 1;
-      setScore(newScore);
-      setClickedIds([...clickedIds, id]);
-
-      // High Score Validation: Check and record if current score beats the best score
-      if (newScore > bestScore) {
-        setBestScore(newScore);
-      }
-        
-    }
-       // Instantly reshuffle the entire grid deck on every click turn
-    setSprites((prevSprites) => shuffleArray(prevSprites));
-  };
-  // Super simple shuffle approach
-const handleCardClick = (id) => {
-  // 1. Run your scoring logic here...
-  if (clickedIds.includes(id)) {
-    setScore(0);
-    setClickedIds([]);
-  } else {
-    const newScore = score + 1;
-    setScore(newScore);
-    setClickedIds([...clickedIds, id]);
-    if (newScore > bestScore) setBestScore(newScore);
-  }
-
-  // 2. Simple one-line shuffle and state update
-  setSprites((prevSprites) => [...prevSprites].sort(() => Math.random() - 0.5));
-};
-
-  */
-  // Fisher-Yates shuffle algorithm to randomly rearrange the array elements
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-
-
   useEffect(() => {
     // Fetching the free PokeAPI endpoint for Ditto
     fetch('https://pokeapi.co/api/v2/pokemon/ditto')
@@ -113,6 +60,24 @@ const handleCardClick = (id) => {
       </div>
     );
   }
+
+
+
+  
+  
+  // Fisher-Yates shuffle algorithm to randomly rearrange the array elements
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+
+
+
 // clicked id
 
  const handleCardClick = (id) => {
@@ -143,6 +108,7 @@ const handleCardClick = (id) => {
   };
 
 
+//reset logic
   const handleResetGame = () => {
   setScore(0);
   setBestScore(0);
@@ -237,3 +203,50 @@ const handleCardClick = (id) => {
     
   );
 }
+
+
+
+
+
+
+//alternative for clickedIds: const [clickedIds, setClickedIds] = useState([]);
+
+  // alternative for Click handler that checks for unique selections, modifies score, and reshuffles
+ /* const handleCardClick = (id) => {
+    if (clickedIds.includes(id)) {
+      // Game Over: Reset score and clicked tracking history
+      setScore(0);
+      setClickedIds([]);
+    } else {
+      // Correct Move: Increment score and record the ID
+      const newScore = score + 1;
+      setScore(newScore);
+      setClickedIds([...clickedIds, id]);
+
+      // High Score Validation: Check and record if current score beats the best score
+      if (newScore > bestScore) {
+        setBestScore(newScore);
+      }
+        
+    }
+       // Instantly reshuffle the entire grid deck on every click turn
+    setSprites((prevSprites) => shuffleArray(prevSprites));
+  };
+  // Super simple shuffle approach
+const handleCardClick = (id) => {
+  // 1. Run your scoring logic here...
+  if (clickedIds.includes(id)) {
+    setScore(0);
+    setClickedIds([]);
+  } else {
+    const newScore = score + 1;
+    setScore(newScore);
+    setClickedIds([...clickedIds, id]);
+    if (newScore > bestScore) setBestScore(newScore);
+  }
+
+  // 2. Simple one-line shuffle and state update
+  setSprites((prevSprites) => [...prevSprites].sort(() => Math.random() - 0.5));
+};
+
+  */
