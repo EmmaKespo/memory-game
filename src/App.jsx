@@ -4,6 +4,10 @@ export default function App() {
   const [sprites, setSprites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [clickedIds, setClickedIds] = useState(new Set());
+  const [score, setScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
+
 
   useEffect(() => {
     // Fetching the free PokeAPI endpoint for Ditto
@@ -50,9 +54,43 @@ export default function App() {
       </div>
     );
   }
+// clicked id
+
+ const handleCardClick = (id) => {
+    if (clickedIds.has(id)) {
+      setScore(0);
+      setClickedIds(new Set());
+    } else {
+      const newScore = score + 1;
+      setScore(newScore);
+      setClickedIds(new Set(clickedIds).add(id));
+      
+      if (newScore > bestScore) {
+        setBestScore(newScore);
+      }
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
+
+      <div className="md:w-1/3 flex flex-col justify-between items-center md:items-start bg-slate-900 p-6 rounded-xl border border-slate-700">
+          <div className="space-y-6 w-full">
+            <div className="bg-slate-800 p-4 rounded-xl shadow-inner border border-slate-600">
+              <span className="block text-sm text-slate-400 uppercase font-semibold">Best Score</span>
+              <span className="block text-4xl font-bold text-yellow-400 mt-1">{bestScore}</span>
+            </div>
+            
+            <div className="bg-slate-800 p-4 rounded-xl shadow-inner border border-slate-600">
+              <span className="block text-sm text-slate-400 uppercase font-semibold">Current Score</span>
+              <span className="block text-4xl font-bold text-blue-400 mt-1">{score}</span>
+            </div>
+          </div>
+        </div>
+          
+        
+
       <div className="max-w-6xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -65,10 +103,12 @@ export default function App() {
         </div>
 
         {/* 8-Image Responsive Grid System */}
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {sprites.map((sprite) => (
-            <div 
+            <button 
               key={sprite.id} 
+              onClick={() => handleCardClick(sprite.id)}
               className="group relative bg-slate-800 rounded-2xl border border-slate-700/50 p-6 flex flex-col items-center justify-between transition-all duration-300 hover:scale-105 hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]"
             >
               {/* Image Container with Subtle Background Glow */}
@@ -80,7 +120,9 @@ export default function App() {
                   className="max-w-full max-h-full object-contain transform group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_4px_6px_rgba(0,0,0,0.3)]"
                   loading="lazy"
                 />
+                
               </div>
+          
 
               {/* Text Label Badge */}
               <div className="w-full text-center">
@@ -88,7 +130,9 @@ export default function App() {
                   {sprite.label}
                 </span>
               </div>
-            </div>
+              
+            </button>
+
           ))}
         </div>
       </div>
