@@ -128,6 +128,16 @@ const handleCardClick = (id) => {
         setBestScore(newScore);
          localStorage.setItem('ditto_best_score', newScore.toString());
       }
+       // AUTOMATIC RESTART LOGIC: Check if the user reached the max score of 8
+      if (newScore === 8) {
+      // Use setTimeout so the UI finishes updating the 8/8 score before resetting
+      setTimeout(() => {
+        alert(" Congratulations! You found all 8 unique variants and won the game!");
+        setScore(0);
+        setClickedIds([]);
+      }, 100);
+    
+  }
     }
     // Instantly reshuffle the entire grid deck on every click turn
     setSprites((prevSprites) => shuffleArray(prevSprites));
