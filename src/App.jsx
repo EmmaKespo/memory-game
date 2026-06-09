@@ -7,7 +7,14 @@ export default function App() {
   //game logic
   const [clickedIds, setClickedIds] = useState(new Set());
   const [score, setScore] = useState(0);
-  const [bestScore, setBestScore] = useState(0);
+  // 1. Initialize bestScore from localStorage (defaults to 0 if none exists)
+  const [bestScore, setBestScore] = useState(() => {
+    const savedBest = localStorage.getItem('ditto_best_score');
+    return savedBest ? parseInt(savedBest, 10) : 0;
+});
+
+
+
   //alternative for clickedIds: const [clickedIds, setClickedIds] = useState([]);
 
   // alternative for Click handler that checks for unique selections, modifies score, and reshuffles
@@ -30,7 +37,25 @@ export default function App() {
     }
        // Instantly reshuffle the entire grid deck on every click turn
     setSprites((prevSprites) => shuffleArray(prevSprites));
-  };*/
+  };
+  // Super simple shuffle approach
+const handleCardClick = (id) => {
+  // 1. Run your scoring logic here...
+  if (clickedIds.includes(id)) {
+    setScore(0);
+    setClickedIds([]);
+  } else {
+    const newScore = score + 1;
+    setScore(newScore);
+    setClickedIds([...clickedIds, id]);
+    if (newScore > bestScore) setBestScore(newScore);
+  }
+
+  // 2. Simple one-line shuffle and state update
+  setSprites((prevSprites) => [...prevSprites].sort(() => Math.random() - 0.5));
+};
+
+  */
   // Fisher-Yates shuffle algorithm to randomly rearrange the array elements
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -101,6 +126,7 @@ export default function App() {
       
       if (newScore > bestScore) {
         setBestScore(newScore);
+         localStorage.setItem('ditto_best_score', newScore.toString());
       }
     }
     // Instantly reshuffle the entire grid deck on every click turn
@@ -110,6 +136,18 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 py-12 px-4 sm:px-6 lg:px-8">
+
+    
+        {/* Header Title Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 sm:text-5xl uppercase">
+             Memory Game
+          </h1>
+          <p className="mt-3 max-w-md mx-auto text-base text-slate-400 sm:text-lg md:mt-5 md:max-w-3xl">
+            Get points by clicking images, but <span className="text-pink-400 font-semibold underline decoration-wavy">don't click the same image twice</span>! Max score is 8.
+          </p>
+        </div>
+
 
       <div className="md:w-1/3 flex flex-col justify-between items-center md:items-start bg-slate-900 p-6 rounded-xl border border-slate-700">
           <div className="space-y-6 w-full">
@@ -127,16 +165,6 @@ export default function App() {
           
         
 
-      <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 sm:text-5xl uppercase">
-            Ditto Sprite Gallery
-          </h1>
-          <p className="mt-3 max-w-md mx-auto text-base text-slate-400 sm:text-lg md:mt-5 md:max-w-3xl">
-            8 distinct styles extracted from a single <span className="text-purple-400 font-semibold">PokeAPI</span> payload.
-          </p>
-        </div>
 
         {/* 8-Image Responsive Grid System */}
 
@@ -171,7 +199,8 @@ export default function App() {
 
           ))}
         </div>
+        <footer><p>&copy; 2026 By Emma Kespo</p></footer>
       </div>
-    </div>
+    
   );
 }
