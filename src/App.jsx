@@ -136,7 +136,6 @@ const handleCardClick = (id) => {
         setScore(0);
         setClickedIds([]);
       }, 100);
-    
   }
     }
     // Instantly reshuffle the entire grid deck on every click turn
@@ -148,7 +147,7 @@ const handleCardClick = (id) => {
   setScore(0);
   setBestScore(0);
   setClickedIds([]);
-  localStorage.removeItem('ditto_best_score');
+  localStorage.removeItem('ditto_best_score', '0');
   // Reshuffle the grid immediately upon resetting
   setSprites((prevSprites) => [...prevSprites].sort(() => Math.random() - 0.5));
 };
