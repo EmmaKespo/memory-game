@@ -4,9 +4,43 @@ export default function App() {
   const [sprites, setSprites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  //game logic
   const [clickedIds, setClickedIds] = useState(new Set());
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  //alternative for clickedIds: const [clickedIds, setClickedIds] = useState([]);
+
+  // alternative for Click handler that checks for unique selections, modifies score, and reshuffles
+ /* const handleCardClick = (id) => {
+    if (clickedIds.includes(id)) {
+      // Game Over: Reset score and clicked tracking history
+      setScore(0);
+      setClickedIds([]);
+    } else {
+      // Correct Move: Increment score and record the ID
+      const newScore = score + 1;
+      setScore(newScore);
+      setClickedIds([...clickedIds, id]);
+
+      // High Score Validation: Check and record if current score beats the best score
+      if (newScore > bestScore) {
+        setBestScore(newScore);
+      }
+        
+    }
+       // Instantly reshuffle the entire grid deck on every click turn
+    setSprites((prevSprites) => shuffleArray(prevSprites));
+  };*/
+  // Fisher-Yates shuffle algorithm to randomly rearrange the array elements
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
 
 
   useEffect(() => {
@@ -69,6 +103,8 @@ export default function App() {
         setBestScore(newScore);
       }
     }
+    // Instantly reshuffle the entire grid deck on every click turn
+    setSprites((prevSprites) => shuffleArray(prevSprites));
   };
 
 
